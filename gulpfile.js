@@ -4,17 +4,16 @@ var coffeelint = require('gulp-coffeelint');
 var header = require('gulp-header');
 var less = require('gulp-less');
 var uglify = require('gulp-uglify');
-var util = require('gulp-util');
+var minifyCss = require('gulp-minify-css');
 
+var creditText = [
+  '/* Develope by : Kosate Limpongsa',
+  ' * https://github.com/kosate/unpredictable',
+  ' */'
+].join('\n') + "\n";
 
 
 gulp.task('js',function() {
-  var creditText = [
-    '/* Develope by : Kosate Limpongsa',
-    ' * https://github.com/kosate/unpredictable',
-    ' */'
-  ].join('\n') + "\n";
-
   gulp.src('./src/private/*.coffee')
     .pipe(coffeelint())
     .pipe(coffeelint.reporter())
@@ -28,6 +27,9 @@ gulp.task('js',function() {
 gulp.task('css',function() {
   gulp.src('./src/private/*.less')
     .pipe(less())
+    .on('error',function( err ){ console.log( err ) })
+    .pipe(minifyCss( { compatibility:'ie8' } ))
+    .pipe(header(creditText))
     .pipe(gulp.dest('./src/public/'))
 });
 
