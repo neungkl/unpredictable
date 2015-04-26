@@ -19,7 +19,7 @@ var creditText = [
 
 gulp.task('js',function() {
   var tmp =
-  gulp.src('./src/private/index.coffee')
+  gulp.src(['./src/private/index.coffee','./src/private/game.coffee'])
     .pipe(coffeelint())
     .pipe(coffeelint.reporter())
     .pipe(coffee())

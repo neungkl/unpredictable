@@ -14,6 +14,17 @@ body {
   color : @palette-Blue-100;
 }
 
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  & > div {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+}
+
 .wrapper {
   display: table;
   width: 100%;
