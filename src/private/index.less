@@ -42,11 +42,47 @@ body {
   margin-bottom: 15px;
 }
 
-.play-btn {
+.play-btn,.pause-btn {
   background-color : @palette-Red-A700;
   color : #FFF;
   margin-top: 40px;
   display: inline-block;
   border-radius: 5px;
   padding: 15px 30px;
+  cursor: pointer;
+}
+.pause-btn {
+  margin-top:20px;
+}
+
+#game {
+  color : @palette-Brown-900;
+  .description {
+    font-size: 0.6em;
+    margin-top: 20px;
+    margin-bottom: 7px;
+  }
+}
+
+#leaderboard {
+  color: @palette-White-500;
+  .title { font-size: 1.2em; }
+  .score {
+    font-size: 3em;
+  }
+}
+
+.footer {
+  font-size: 0.5em;
+  background-color : @palette-Brown-900;
+  color: @palette-Grey-400;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width : 100%;
+  padding: 5px;
+  a {
+    color: inherit;
+    text-decolation : none;
+  }
 }

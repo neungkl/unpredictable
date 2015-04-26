@@ -6,19 +6,24 @@ window.game = do ->
   Board = []
   traveled = []
   obj =
-    ball : new Group()
+    itr : new Group()
     board : new Group()
-    status : new Group()
   refreshTime = 0
+  gameStatus = 'None'
+  startTime = 0
+  unableToPause = true
+  curr = {}
+  conf =
+    size : 0
+    padding : 0
 
   showMaze = ->
     obj.board.remove()
     obj.board = new Group()
     grp = obj.board
-    grp.moveBelow obj.ball
-    size = 590 / GameSize
-    padding = 5
-    console.log size,padding
+    grp.moveBelow obj.itr
+    size = conf.size
+    padding = conf.padding
     for i in [0...GameSize] by 1
       for j in [0...GameSize] by 1
         for k in [0...4]
@@ -46,7 +51,9 @@ window.game = do ->
                 e = s + [0,size]
 
             p = new Path.Line s,e
-            p.strokeColor = 'black'
+            p.strokeColor = '#3E2723'
+            p.strokeWidth = 3
+            p.strokeCap = 'round'
             grp.addChild p
     return
 
@@ -58,7 +65,7 @@ window.game = do ->
 
     dir = [[0,-1],[1,0],[0,1],[-1,0]]
     od = [0,1,2,3]
-    for [1..10]
+    for [1..4]
       a = Math.floor Math.random()*4
       b = Math.floor Math.random()*4
       tmp = od[a]
@@ -95,18 +102,86 @@ window.game = do ->
     view.draw()
     return
 
+  drawSetup = ->
+    padding = conf.padding
+    size = conf.size
+    desCol = '#FFF176'
+    obj.itr.remove()
+    obj.itr = new Group()
+    s = new Shape.Rectangle padding+1,padding+1,size-2,size-2
+    s.fillColor = desCol
+    obj.itr.addChild s
+    s = new Shape.Rectangle \
+          padding+1 + size*(GameSize-1) \
+          ,padding+1 + size*(GameSize-1) \
+          ,size-2,size-2
+    s.fillColor = desCol
+    obj.itr.addChild s
+    s = new Shape.Circle new Point(padding+size/2,padding+size/2), size*0.3
+    s.fillColor = '#D50000'
+    s.name = 'ball'
+    curr =
+      x : 0
+      y : 0
+    obj.itr.addChild s
+    return
+
+  moveBall = ->
+    return
+
+  view.onKeyDown = (e) ->
+    if Key.isDown 'up'
+      moveBall 1
+    else if Key.isDown 'right'
+      moveBall 2
+    else if Key.isDown 'down'
+      moveBall 3
+    else if Key.isDown 'left'
+      moveBall 4
+    return
+
   view.onFrame = (e) ->
-    refreshTime += e.delta
-    if refreshTime > 3
-      refreshTime -= 3
+    if gameStatus isnt 'play'
+      return
+    if gameStatus is 'pause'
       ret.mazeGenerator()
+      return
+    refreshTime += e.delta
+    if refreshTime > 7
+      refreshTime -= 7
+      ret.mazeGenerator()
+    startTime += e.delta
+    $('.timer span').text startTime.toFixed(2)
+    return
+
+  ret.start = ->
+    gameStatus = 'play'
+    conf.size = 590 / GameSize
+    conf.padding = 5
+    drawSetup()
+    startTime = 0
+    ret.mazeGenerator()
+    return
+
+  ret.pause = ->
+    if unableToPause isnt true
+      return
+    gameStatus = 'pause'
+    ret.mazeGenerator()
+    return
+
+  ret.resume = ->
+    gameStatus = 'play'
+    ret.mazeGenerator()
+    return
 
   ret.init = (level = 10) ->
     GameSize = level
     view.viewSize = new Size( 600,600 )
     ret.mazeGenerator()
+    ret.start()
     return
 
   ret
 
-game.init(25)
+game.init(22)
