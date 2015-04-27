@@ -3,24 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>Unpredictable</title>
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">//-->
+    <meta name="keywords" content="kozartae, kosate studio, kosate, clock, tick tock, weird clock" />
+    <meta name="description" content="Clever, Cofused and Weird Clock. Tick tock... Tick tock... Tick tock..." />
+    <meta property="og:image" content="http://kosatestudio.com/project/clock/thumnail.jpg" />
+    <meta property="og:title" content="WhAt TiMe Is iT ??" />
+    <meta property="og:type" content="website" />
+    <meta property="fb:admins" content="100000418457798" />
+    <link rel="shortcut icon" href="../../images/favicon.ico">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="src/public/index.css">
   </head>
   <body>
 
     <div class="container">
-      <div class="wrapper" style="display:none;">
-        <div class="content">
-          <div class="title">UNpRediCTablE ?</div>
-          <div>A confusing maze game which unpredictable.</div>
-          <div class="play-btn">Play</div>
-        </div>
-      </div>
-      <div id="game" class="wrapper">
+
+      <div id="game" class="wrapper" style="opacity:0.1">
         <div class="content">
           <canvas id="game-canvas" resize></canvas>
-          <div class="bottom-setup">
+          <div class="bottom-setup" style="display:none;">
             <div class="description">left up down right arrow to control.</div>
             <div class="timer"> Time : <span>0.00</span>s </div>
             <div class="pause-btn">Pause</div>
@@ -32,8 +34,15 @@
           <div class="title">
             Best time
           </div>
-          <div class="score">50 s</div>
+          <div class="score"><span>50</span> s</div>
           <div class="play-btn">Play Again</div>
+        </div>
+      </div>
+      <div class="wrapper" id="intro">
+        <div class="content">
+          <div class="title">UNpRediCTablE ?</div>
+          <div>A confusing maze game which unpredictable.</div>
+          <div class="play-btn">Play</div>
         </div>
       </div>
     </div>
@@ -49,5 +58,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.22/paper-full.min.js"></script>
     <script src="src/public/index.js"></script>
     <script src="src/public/game.js" type="text/paperscript" canvas="game-canvas"></script>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-39468607-1']);
+      _gaq.push(['_setDomainName', 'kosatestudio.com']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
   </body>
 </html>

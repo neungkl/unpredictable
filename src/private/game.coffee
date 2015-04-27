@@ -1,4 +1,5 @@
-log = (x) -> console.log x
+log = (x) ->
+  return
 
 window.game = do ->
   ret = {}
@@ -12,10 +13,12 @@ window.game = do ->
   gameStatus = 'None'
   startTime = 0
   unableToPause = true
-  curr = {}
+  cur = {}
+  dest = {}
   conf =
     size : 0
     padding : 0
+  tool = new Tool()
 
   showMaze = ->
     obj.board.remove()
@@ -65,7 +68,7 @@ window.game = do ->
 
     dir = [[0,-1],[1,0],[0,1],[-1,0]]
     od = [0,1,2,3]
-    for [1..4]
+    for [1..16]
       a = Math.floor Math.random()*4
       b = Math.floor Math.random()*4
       tmp = od[a]
@@ -99,6 +102,24 @@ window.game = do ->
       Board[i][0][3]  = true
       Board[i][GameSize-1][1] = true
     showMaze()
+    log 555
+    while true
+      dest =
+        x : Math.floor Math.random()*GameSize
+        y : Math.floor Math.random()*GameSize
+      if dest.x isnt 0 or dest.y isnt 0
+        break
+
+    ###
+    dest =
+      x :1
+      y :0
+    ###
+
+    size = conf.size
+    padding = conf.padding
+    obj.itr.children['dest'].position.x = padding + size*dest.x + size/2
+    obj.itr.children['dest'].position.y = padding + size*dest.y + size/2
     view.draw()
     return
 
@@ -108,36 +129,63 @@ window.game = do ->
     desCol = '#FFF176'
     obj.itr.remove()
     obj.itr = new Group()
-    s = new Shape.Rectangle padding+1,padding+1,size-2,size-2
+    s = new Shape.Rectangle padding+2,padding+2,size-4,size-4
     s.fillColor = desCol
     obj.itr.addChild s
     s = new Shape.Rectangle \
-          padding+1 + size*(GameSize-1) \
-          ,padding+1 + size*(GameSize-1) \
-          ,size-2,size-2
+          padding + size*(GameSize-1) \
+          ,padding + size*(GameSize-1) \
+          ,size-4,size-4
     s.fillColor = desCol
+    s.name = 'dest'
     obj.itr.addChild s
     s = new Shape.Circle new Point(padding+size/2,padding+size/2), size*0.3
     s.fillColor = '#D50000'
     s.name = 'ball'
-    curr =
+    cur =
       x : 0
       y : 0
     obj.itr.addChild s
     return
 
-  moveBall = ->
+  moveBall = (d) ->
+    dir = [[0,-1],[1,0],[0,1],[-1,0]]
+    x = cur.x + dir[d][0]
+    y = cur.y + dir[d][1]
+    padding = conf.padding
+    size = conf.size
+    if x < 0 or y < 0 or x >= GameSize or y >= GameSize
+      return
+    if Board[ cur.y ][ cur.x ][d] is true
+      return
+
+    obj.itr.children['ball'].position.x += dir[d][0]*size
+    obj.itr.children['ball'].position.y += dir[d][1]*size
+
+    cur =
+      x : x
+      y : y
+
+    if cur.x is dest.x and cur.y is dest.y
+      win()
     return
 
-  view.onKeyDown = (e) ->
+  win = ->
+    gameStatus = 'finish'
+    $('.bottom-setup').slideUp()
+    $('#game').animate {opacity:0.1}
+    $("#leaderboard").show().css({opacity:0}).animate {opacity:1}
+    $("#leaderboard .score > span").text( startTime.toFixed(3) )
+
+  tool.onKeyDown = (e) ->
     if Key.isDown 'up'
-      moveBall 1
+      moveBall 0
     else if Key.isDown 'right'
-      moveBall 2
+      moveBall 1
     else if Key.isDown 'down'
-      moveBall 3
+      moveBall 2
     else if Key.isDown 'left'
-      moveBall 4
+      moveBall 3
     return
 
   view.onFrame = (e) ->
@@ -147,8 +195,9 @@ window.game = do ->
       ret.mazeGenerator()
       return
     refreshTime += e.delta
-    if refreshTime > 7
-      refreshTime -= 7
+    maxTime = 15
+    if refreshTime > maxTime
+      refreshTime -= maxTime*Math.floor refreshTime/maxTime
       ret.mazeGenerator()
     startTime += e.delta
     $('.timer span').text startTime.toFixed(2)
@@ -156,18 +205,16 @@ window.game = do ->
 
   ret.start = ->
     gameStatus = 'play'
-    conf.size = 590 / GameSize
-    conf.padding = 5
     drawSetup()
     startTime = 0
     ret.mazeGenerator()
+    $('.bottom-setup').slideDown('fast')
     return
 
   ret.pause = ->
     if unableToPause isnt true
       return
     gameStatus = 'pause'
-    ret.mazeGenerator()
     return
 
   ret.resume = ->
@@ -175,13 +222,15 @@ window.game = do ->
     ret.mazeGenerator()
     return
 
-  ret.init = (level = 10) ->
+  ret.init = (level = 22) ->
     GameSize = level
     view.viewSize = new Size( 600,600 )
-    ret.mazeGenerator()
-    ret.start()
+    conf.size = 590 / GameSize
+    conf.padding = 5
+    #ret.start()
     return
 
   ret
 
-game.init(22)
+game.init()
+game.mazeGenerator()
