@@ -16,4 +16,7 @@ $ ()->
     game.start()
     return
 
+  if `'ontouchstart' in window` or `'onmsgesturechange' in window`
+    $('#game .description').text('touch on maze to control')
+
   return

@@ -20,7 +20,11 @@ var creditText = [
 gulp.task('js',function() {
   var tmp =
   gulp.src(['./src/private/index.coffee','./src/private/game.coffee'])
-    .pipe(coffeelint())
+    .pipe(coffeelint({
+      "no_backticks": {
+        "level": "ignore"
+      }
+    }))
     .pipe(coffeelint.reporter())
     .pipe(coffee())
     .on('error',function(){});

@@ -1,6 +1,9 @@
 log = (x) ->
   return
 
+isTouch = ->
+  return `'ontouchstart' in window` or `'onmsgesturechange' in window`
+
 window.game = do ->
   ret = {}
   GameSize = -1
@@ -9,6 +12,7 @@ window.game = do ->
   obj =
     itr : new Group()
     board : new Group()
+    navigator : new Group()
   refreshTime = 0
   gameStatus = 'None'
   startTime = 0
@@ -25,6 +29,7 @@ window.game = do ->
     obj.board = new Group()
     grp = obj.board
     grp.moveBelow obj.itr
+    grp.moveBelow obj.navigator
     size = conf.size
     padding = conf.padding
     for i in [0...GameSize] by 1
@@ -149,6 +154,8 @@ window.game = do ->
     return
 
   moveBall = (d) ->
+    if gameStatus isnt 'play'
+      return
     dir = [[0,-1],[1,0],[0,1],[-1,0]]
     x = cur.x + dir[d][0]
     y = cur.y + dir[d][1]
@@ -170,12 +177,27 @@ window.game = do ->
       win()
     return
 
+  showArrow = ->
+    obj.navigator.remove()
+    obj.navigator = new Group()
+    grp = obj.navigator
+    grp.moveBelow obj.board
+    pos  = [[300,50],[560,300],[300,560],[40,300]]
+    for i in [0...4]
+      s = new Path.RegularPolygon(new Point(pos[i][0], pos[i][1]), 3, 40)
+      s.fillColor = '#FFF'
+      s.rotate i*90
+      s.opacity = 0.5
+      grp.addChild s
+    return
+
   win = ->
     gameStatus = 'finish'
     $('.bottom-setup').slideUp()
     $('#game').animate {opacity:0.1}
     $("#leaderboard").show().css({opacity:0}).animate {opacity:1}
     $("#leaderboard .score > span").text( startTime.toFixed(3) )
+    return
 
   tool.onKeyDown = (e) ->
     if Key.isDown 'up'
@@ -187,6 +209,24 @@ window.game = do ->
     else if Key.isDown 'left'
       moveBall 3
     return
+
+  tool.onMouseDown = (e) ->
+    if isTouch()
+      obj.navigator.visible = false
+      size = $('#game-canvas').width()
+      tx = e.downPoint.x
+      ty = e.downPoint.y
+      p = [[300,0],[size,size/2],[size/2,size],[0,size/2]]
+      best = 999999
+      selected = -1
+      for i in [0...4]
+        dist = (tx-p[i][0])**2 + (ty-p[i][1])**2
+        if dist < best
+          best = dist
+          selected = i
+      console.log selected
+      moveBall selected
+      return
 
   view.onFrame = (e) ->
     if gameStatus isnt 'play'
@@ -201,6 +241,11 @@ window.game = do ->
       ret.mazeGenerator()
     startTime += e.delta
     $('.timer span').text startTime.toFixed(2)
+    return
+
+  view.onResize = (e) ->
+    size = 600
+    view.viewSize = new Size(size,size)
     return
 
   ret.start = ->
@@ -227,6 +272,8 @@ window.game = do ->
     view.viewSize = new Size( 600,600 )
     conf.size = 590 / GameSize
     conf.padding = 5
+    if isTouch()
+      showArrow()
     #ret.start()
     return
 
