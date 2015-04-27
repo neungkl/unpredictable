@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Unpredictable</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="keywords" content="kozartae, kosate studio, kosate, clock, tick tock, weird clock" />
     <meta name="description" content="A maze game that will make you confused." />
     <meta property="og:image" content="http://project.kosatestudio.com/unpredictable/thumnail.png" />
@@ -18,13 +19,6 @@
   <body>
 
     <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/th_TH/sdk.js#xfbml=1&version=v2.3";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
 
     <div class="container">
       <div id="game" class="wrapper" style="opacity:0.1">
@@ -49,7 +43,7 @@
       <div class="wrapper" id="intro">
         <div class="content">
           <div class="title">UNpRediCTablE ?</div>
-          <div>A confusing maze game which unpredictable.</div>
+          <div style="padding: 0px 10px;">A confusing maze game which unpredictable.</div>
           <div class="play-btn">Play</div>
         </div>
       </div>
@@ -57,10 +51,10 @@
 
     <div class="footer">
       <div>
-        <div style="float:left; margin-top:5px;"><a href='http://project.kosatestudio.com' target='_blank'>Kosatestudio.com</a> : Develope by Kosate Limpongsa</div>
+        <div class="credit" style="float:left;"><a href='http://project.kosatestudio.com' target='_blank'>Kosatestudio.com</a></div>
         <div style="float:right;">
           <!--facebook-->
-          <div style="margin-top:-2px; margin-right:3px;" width="90px" class="fb-share-button" data-href="http://project.kosatestudio.com/unpredictable/" data-layout="button_count"></div>
+          <div class="fb-like" data-href="http://project.kosatestudio.com/unpredictable/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
           <!--github-->
           <iframe src="https://ghbtns.com/github-btn.html?user=kosate&repo=unpredictable&type=star&count=true" frameborder="0" scrolling="0" width="76px" height="20px"></iframe>
           <!--twitter-->
@@ -89,5 +83,12 @@
       })();
 
     </script>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1408205329486090";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
   </body>
 </html>
