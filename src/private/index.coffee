@@ -1,5 +1,6 @@
 $ ()->
-  $('.pause-btn').click ()->
+  $('.pause-btn').click ()->  
+    if game?
     if $('.pause-btn').text() is 'Pause'
       game.pause()
       $('.pause-btn').text('Resume')
