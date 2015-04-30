@@ -279,5 +279,6 @@ window.game = do ->
 
   ret
 
-game.init()
-game.mazeGenerator()
+try
+  game.init()
+  game.mazeGenerator()
