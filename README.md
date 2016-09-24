@@ -1,6 +1,6 @@
 # Unpredictable
 A maze game which randomize every about 15 seconds that make a lot of confusion to player.
-http://project.kosatestudio.com/unpredictable
+http://project.neungkl.com/unpredictable
 
 ### Build Project
 
