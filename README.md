@@ -1,6 +1,6 @@
 # Unpredictable
 
-![Unpredictable](preview.png)
+<img src="preview.png" height="600">
 
 A maze game which randomize every about 15 seconds that make a lot of confusion to player.
 http://project.neungkl.com/unpredictable
